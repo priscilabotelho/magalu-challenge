@@ -41,10 +41,13 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
 
+      - name: 'Get GKE credentials'
+        run: gcloud container clusters get-credentials magalu-cluster --region us-central1 --project magalu-challenge
+
       - name: 'Deploy to Config Map'
         if: success()
-        run: kubectl apply -f configmap.yaml
+        run: kubectl apply -f configmap.yaml --validate=false
 
       - name: 'Deploy to GKE'
         if: success()
-        run: kubectl apply -f deployment.yaml
+        run: kubectl apply -f deployment.yaml --validate=false
