@@ -23,7 +23,7 @@ jobs:
         run: 'gcloud auth list'
       
       - name: Terraform Init
-        run: cd magalu-challenge/terraform && terraform init
+        run: terraform init
 
       - name: Terraform Validate
         run: cd magalu-challenge/terraform && terraform validate
