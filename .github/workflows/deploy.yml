@@ -35,7 +35,9 @@ jobs:
       - name: Debug step
         run: |
           echo "Debugging information:"
-          ls -la  # Exemplo de comando para listar arquivos no diretório
+          ls -la
+          cd ..
+          ls -la
 
       - name: 'Terraform Plan'
         run: terraform plan
