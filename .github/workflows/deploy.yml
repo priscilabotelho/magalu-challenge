@@ -22,8 +22,14 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
 
+      - name: 'Install gke-gcloud-auth-plugin'
+        run: gcloud components install kubectl
+
+      - name: 'Verify gke-gcloud-auth-plugin version'
+        run: gcloud version
+
       - name: 'Verify authentication'
-        run: 'gcloud auth list'
+        run: gcloud auth list
 
       ##- name: 'Debug'
         ##run: 'ls -la'
@@ -59,9 +65,10 @@ jobs:
       - name: 'Deploy to Config Map'
         if: success()
         run: |
-         gcloud container clusters get-credentials magalu-challenge-gke --region us-central1 --project magalu-challenge
-         kubectl apply -f configmap.yaml --validate=false
+          kubectl apply -f configmap.yaml --validate=false
 
       - name: 'Deploy to GKE'
         if: success()
-        run: kubectl apply -f deployment.yaml --validate=false
+        run: |
+          kubectl apply -f deployment.yaml --validate=false
+
