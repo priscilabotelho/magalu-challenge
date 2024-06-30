@@ -32,7 +32,10 @@ jobs:
         run: terraform init
 
       - name: 'Terraform Import VPC'
-        run: terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc  
+        run: terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc 
+
+      - name: 'Terraform Import Subnet'
+        run: terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
 
       - name: 'Terraform Validate'
         run: terraform validate
