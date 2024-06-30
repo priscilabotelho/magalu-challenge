@@ -25,8 +25,8 @@ jobs:
       - name: 'Verify authentication'
         run: 'gcloud auth list'
 
-      - name: 'Debug'
-        run: 'ls -la'
+      ##- name: 'Debug'
+        ##run: 'ls -la'
         
       - name: 'Terraform Init'
         run: terraform init
@@ -39,6 +39,9 @@ jobs:
 
       - name: 'Terraform Import GKE Cluster'
         run: terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
+
+      - name: 'Terraform Import GKE Node Pool'
+        run: terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
 
       - name: 'Terraform Validate'
         run: terraform validate
@@ -60,4 +63,3 @@ jobs:
       - name: 'Deploy to GKE'
         if: success()
         run: kubectl apply -f deployment.yaml --validate=false
-        
