@@ -6,21 +6,16 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  job_id:
+    runs-on: ubuntu-latest # Adicione esta linha para especificar o ambiente de execução
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Cloud SDK
-      uses: google-github-actions/auth@v2
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
       with:
-        version: 'latest'
-        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-        project_id: magalu-challenge
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
-    - name: Deploy to GCP
-      run: |
-        # Comandos para implantar seu projeto no GCP, por exemplo:
-        gcloud app deploy
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
