@@ -33,7 +33,7 @@ jobs:
         working-directory: ''
 
       - name: 'Terraform Plan'
-        run: terraform plan -out=tfplan
+        run: terraform plan
 
       - name: 'Terraform Apply'
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
