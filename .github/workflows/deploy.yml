@@ -31,6 +31,9 @@ jobs:
       - name: 'Terraform Init'
         run: terraform init
 
+      - name: 'Terraform Import VPC'
+        run: terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc  
+
       - name: 'Terraform Validate'
         run: terraform validate
 
