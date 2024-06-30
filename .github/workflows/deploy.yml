@@ -9,11 +9,22 @@ jobs:
   job_id:
     runs-on: ubuntu-latest
 
+    env:
+      CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      CLOUDSDK_CORE_PROJECT: magalu-challenge
+      CLOUDSDK_PROJECT: magalu-challenge
+      GCLOUD_PROJECT: magalu-challenge
+      GCP_PROJECT: magalu-challenge
+      GOOGLE_CLOUD_PROJECT: magalu-challenge
+      CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
+      CLOUDSDK_METRICS_ENVIRONMENT_VERSION: 2.1.0
+
     steps:
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
           project_id: magalu-challenge
 
       - name: 'Set up Cloud SDK'
@@ -21,21 +32,27 @@ jobs:
 
       - name: 'Verify authentication'
         run: 'gcloud auth list'
-      
-      - name: Terraform Init
+
+      - name: 'Check current directory'
+        run: 'pwd'
+        
+      - name: 'Terraform Init'
         run: terraform init
+        working-directory: ''
 
-      - name: Terraform Validate
+      - name: 'Terraform Validate'
         run: terraform validate
+        working-directory: ''
 
-      - name: Terraform Plan
+      - name: 'Terraform Plan'
         run: terraform plan -out=tfplan
-        working-directory: /terraform
+        working-directory: /home/runner/work/magalu-challenge/magalu-challenge
 
-      - name: Terraform Apply
+      - name: 'Terraform Apply'
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
+        working-directory: ''
 
-      - name: Deploy to GKE
+      - name: 'Deploy to GKE'
         if: success()
         run: kubectl apply -f deployment.yaml
