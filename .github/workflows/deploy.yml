@@ -37,26 +37,26 @@ jobs:
         run: |
           cd magalu-challenge/terraform
           terraform init
-        working-directory: magalu-challenge/terraform
+        working-directory: magalu-challenge/
 
       - name: 'Terraform Validate'
         run: |
           cd magalu-challenge/terraform
           terraform validate
-        working-directory: magalu-challenge/terraform
+        working-directory: magalu-challenge/
 
       - name: 'Terraform Plan'
         run: |
           cd magalu-challenge/terraform
           terraform plan -out=tfplan
-        working-directory: magalu-challenge/terraform
+        working-directory: magalu-challenge/
 
       - name: 'Terraform Apply'
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           cd magalu-challenge/terraform
           terraform apply -auto-approve tfplan
-        working-directory: magalu-challenge/terraform
+        working-directory: magalu-challenge/
 
       - name: 'Deploy to GKE'
         if: success()
