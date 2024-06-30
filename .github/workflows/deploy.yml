@@ -17,5 +17,11 @@ jobs:
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
 
+    - name: 'Verify authentication'
+      run: 'gcloud auth list'
+
+    - name: 'List projects'
+      run: 'gcloud projects list'
+
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
