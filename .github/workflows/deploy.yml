@@ -1,4 +1,4 @@
-name: Deploy to GCP 
+name: Deploy to GCP
 
 on:
   push:
@@ -6,66 +6,75 @@ on:
       - main
 
 jobs:
-  job_id:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}'
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           project_id: magalu-challenge
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
-      - name: 'Install gke-gcloud-auth-plugin'
+      - name: Install kubectl
         run: gcloud components install kubectl
 
-      - name: 'Verify gke-gcloud-auth-plugin version'
-        run: gcloud version
+      - name: Verify kubectl version
+        run: kubectl version --client
 
-      - name: 'Verify authentication'
-        run: gcloud auth list
-
-      ##- name: 'Debug'
-        ##run: 'ls -la'
-        
-      - name: 'Terraform Init'
+      - name: Terraform Init
         run: terraform init
 
-      - name: 'Terraform Import VPC'
-        run: terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc 
+      - name: Terraform Import Resources
+        run: |
+          terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc
+          terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
+          terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
+          terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
 
-      - name: 'Terraform Import Subnet'
-        run: terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
-
-      - name: 'Terraform Import GKE Cluster'
-        run: terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
-
-      - name: 'Terraform Import GKE Node Pool'
-        run: terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
-
-      - name: 'Terraform Validate'
+      - name: Terraform Validate
         run: terraform validate
 
-      - name: 'Terraform Plan'
+      - name: Terraform Plan
         run: terraform plan -out=tfplan
 
-      - name: 'Terraform Apply'
+      - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
 
-      - name: 'Get GKE credentials'
+      - name: Get GKE credentials
         run: gcloud container clusters get-credentials magalu-challenge-gke --region us-central1 --project magalu-challenge
 
-      - name: 'Deploy to Config Map'
+      - name: Deploy Hello World
         if: success()
         run: |
-          kubectl apply -f configmap.yaml --validate=false
+          kubectl apply -f - <<EOF
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: hello-world-deployment
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: hello-world
+            template:
+              metadata:
+                labels:
+                  app: hello-world
+              spec:
+                containers:
+                  - name: hello-world
+                    image: nginx:latest
+                    ports:
+                      - containerPort: 80
+          EOF
 
       - name: 'Deploy to GKE'
         if: success()

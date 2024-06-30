@@ -14,17 +14,7 @@ spec:
     spec:
       containers:
         - name: hello-world
-          image: gcr.io/magalu-challenge/hello-world-app:latest
+          image: nginx:latest  # Exemplo com o nginx
           ports:
-            - containerPort: 3000
-          volumeMounts:
-            - name: html-volume
-              mountPath: /usr/share/nginx/html
-              subPath: index.html
-      volumes:
-        - name: html-volume
-          configMap:
-            name: html-configmap
-            items:
-              - key: index.html
-                path: index.html
+            - containerPort: 80  # Porta do nginx
+
