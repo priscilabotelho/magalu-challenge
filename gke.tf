@@ -27,7 +27,7 @@ resource "google_container_node_pool" "nodes_primarios" {
       env = sensitive(var.project_id)
     }
 
-    machine_type = "e2-medium"
+    machine_type = "e2-micro"
     tags         = ["gke-node", sensitive("${var.project_id}-gke")]
     metadata = {
       disable-legacy-endpoints = "true"
