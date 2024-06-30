@@ -8,7 +8,7 @@ resource "google_container_cluster" "magalu_cluster" {
 
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
-  }
+}
 
 # Node Pool Gerenciado Separadamente
 resource "google_container_node_pool" "nodes_primarios" {
@@ -32,5 +32,8 @@ resource "google_container_node_pool" "nodes_primarios" {
     metadata = {
       disable-legacy-endpoints = "true"
     }
+
+    # Definindo o tamanho do disco SSD em GB
+    disk_size_gb = 30  
   }
 }
