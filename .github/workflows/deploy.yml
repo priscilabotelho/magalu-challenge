@@ -9,17 +9,6 @@ jobs:
   job_id:
     runs-on: ubuntu-latest
 
-    env:
-      CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      CLOUDSDK_CORE_PROJECT: magalu-challenge
-      CLOUDSDK_PROJECT: magalu-challenge
-      GCLOUD_PROJECT: magalu-challenge
-      GCP_PROJECT: magalu-challenge
-      GOOGLE_CLOUD_PROJECT: magalu-challenge
-      CLOUDSDK_METRICS_ENVIRONMENT: github-actions-setup-gcloud
-      CLOUDSDK_METRICS_ENVIRONMENT_VERSION: 2.1.0
-
     steps:
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
