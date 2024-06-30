@@ -7,21 +7,34 @@ on:
 
 jobs:
   job_id:
-    runs-on: ubuntu-latest # Adicione esta linha para especificar o ambiente de execução
+    runs-on: ubuntu-latest
+
     steps:
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          project_id: magalu-challenge
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v2'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
 
-    - name: 'Verify authentication'
-      run: 'gcloud auth list'
+      - name: 'Verify authentication'
+        run: 'gcloud auth list'
+      
+      - name: Terraform Init
+        run: cd terraform && terraform init
 
-    - name: 'List projects'
-      run: 'gcloud projects list'
+      - name: Terraform Validate
+        run: cd terraform && terraform validate
 
-    - name: 'Use gcloud CLI'
-      run: 'gcloud info'
+      - name: Terraform Plan
+        run: cd terraform && terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: cd terraform && terraform apply -auto-approve tfplan
+
+      - name: Deploy to GKE
+        if: success()
+        run: kubectl apply -f deployment.yaml
