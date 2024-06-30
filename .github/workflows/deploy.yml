@@ -1,0 +1,26 @@
+name: Deploy to GCP
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        version: 'latest'
+        service_account_key: ${{ secrets.GCP_KEY }}
+        project_id: magalu-challenge
+
+    - name: Deploy to GCP
+      run: |
+        # Comandos para implantar seu projeto no GCP, por exemplo:
+        gcloud app deploy
