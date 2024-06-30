@@ -26,14 +26,14 @@ jobs:
         run: terraform init
 
       - name: Terraform Validate
-        run: cd magalu-challenge/terraform && terraform validate
+        run: terraform validate
 
       - name: Terraform Plan
-        run: cd magalu-challenge/terraform && terraform plan -out=tfplan
+        run: terraform plan -out=tfplan
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: cd magalu-challenge/terraform && terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan
 
       - name: Deploy to GKE
         if: success()
