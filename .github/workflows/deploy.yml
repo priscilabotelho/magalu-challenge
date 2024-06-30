@@ -46,7 +46,7 @@ jobs:
 
       - name: 'Terraform Plan'
         run: terraform plan -out=tfplan
-        working-directory: ''
+        working-directory: /home/runner/work/magalu-challenge/magalu-challenge
 
       - name: 'Terraform Apply'
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
