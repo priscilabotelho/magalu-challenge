@@ -58,7 +58,9 @@ jobs:
 
       - name: 'Deploy to Config Map'
         if: success()
-        run: kubectl apply -f configmap.yaml --validate=false
+        run: |
+         gcloud container clusters get-credentials magalu-challenge-gke --region us-central1 --project magalu-challenge
+         kubectl apply -f configmap.yaml --validate=false
 
       - name: 'Deploy to GKE'
         if: success()
