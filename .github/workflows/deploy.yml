@@ -41,6 +41,10 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve tfplan
 
+      - name: 'Deploy to Config Map'
+        if: success()
+        run: kubectl apply -f configmap.yaml
+
       - name: 'Deploy to GKE'
         if: success()
         run: kubectl apply -f deployment.yaml

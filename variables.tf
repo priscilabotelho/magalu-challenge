@@ -1,5 +1,5 @@
 variable "gke_num_nodes" {
-  default     = 2
+  default     = 1
   description = "numero de nodes para o cluster"
 }
 
