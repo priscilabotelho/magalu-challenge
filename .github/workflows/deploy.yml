@@ -31,6 +31,12 @@ jobs:
       - name: 'Terraform Validate'
         run: terraform validate
         working-directory: ''
+      
+      - name: Debug step
+        run: |
+          echo "Debugging information:"
+          ls -l  # Exemplo de comando para listar arquivos no diretório
+          env     # Exemplo de comando para mostrar variáveis de ambiente
 
       - name: 'Terraform Plan'
         run: terraform plan
