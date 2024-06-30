@@ -32,31 +32,26 @@ jobs:
 
       - name: 'Verify authentication'
         run: 'gcloud auth list'
-      
+
+      - name: 'Check current directory'
+        run: 'pwd'
+        
       - name: 'Terraform Init'
-        run: |
-          cd magalu-challenge/terraform
-          terraform init
-        working-directory: magalu-challenge/
+        run: terraform init
+        working-directory: ''
 
       - name: 'Terraform Validate'
-        run: |
-          cd magalu-challenge/terraform
-          terraform validate
-        working-directory: magalu-challenge/
+        run: terraform validate
+        working-directory: ''
 
       - name: 'Terraform Plan'
-        run: |
-          cd magalu-challenge/terraform
-          terraform plan -out=tfplan
-        working-directory: magalu-challenge/
+        run: terraform plan -out=tfplan
+        working-directory: ''
 
       - name: 'Terraform Apply'
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          cd magalu-challenge/terraform
-          terraform apply -auto-approve tfplan
-        working-directory: magalu-challenge/
+        run: terraform apply -auto-approve tfplan
+        working-directory: ''
 
       - name: 'Deploy to GKE'
         if: success()
