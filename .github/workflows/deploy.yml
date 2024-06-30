@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
@@ -22,8 +25,8 @@ jobs:
       - name: 'Verify authentication'
         run: 'gcloud auth list'
 
-      - name: 'Check current directory'
-        run: 'pwd'
+      - name: 'Debug'
+        run: 'ls -la'
         
       - name: 'Terraform Init'
         run: terraform init
@@ -31,13 +34,6 @@ jobs:
       - name: 'Terraform Validate'
         run: terraform validate
         working-directory: ''
-      
-      - name: Debug step
-        run: |
-          echo "Debugging information:"
-          ls -la
-          cd ..
-          ls -la
 
       - name: 'Terraform Plan'
         run: terraform plan
