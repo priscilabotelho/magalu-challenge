@@ -45,6 +45,9 @@ Este arquivo tem como objetivo listar sobre a construção do desafio.
 **Conteúdo**: Contém o arquivo `deployment.yaml` que define a configuração do deployment da nossa aplicação hello-world.
 
 ### .terraform.lock.hcl
+---
+### [Para mais detalhes do que foi feito no projeto clique aqui](docs/readme.md)
+
 
 **Descrição**: Este é um arquivo de bloqueio do Terraform.
 
