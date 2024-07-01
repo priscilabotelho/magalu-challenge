@@ -33,12 +33,12 @@ jobs:
          cd terraform-gke
          terraform init
 
-      ##- name: Terraform Import Resources
-        ##run: |
-        ##  terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc
-        ##  terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
-        ##  terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
-        ##  terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
+      - name: Terraform Import Resources
+        run: |
+         terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc
+         terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
+         terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
+         terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
 
       - name: Terraform Validate
         run: |
@@ -62,8 +62,3 @@ jobs:
       - name: Deploy Hello World
         if: success()
         run: kubectl apply -f app/deployment.yaml
-
-      - name: 'Deploy to GKE'
-        if: success()
-        run: |
-          kubectl apply -f deployment.yaml --validate=false
