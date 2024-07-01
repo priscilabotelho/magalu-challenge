@@ -44,17 +44,19 @@ resource "google_container_cluster" "magalu_cluster" {
 
 #### Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
 
-  resource "google_container_node_pool" "nodes_primarios" {
-  name       = "${google_container_cluster.magalu_cluster.name}-node-pool"
-  location   = var.region
-  cluster    = google_container_cluster.magalu_cluster.name
-  node_count = var.gke_num_nodes
+<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
+  <pre>
+resource "google_container_cluster" "magalu_cluster" {
+  name     = sensitive("${var.project_id}-gke")
+  location = var.region
 
-  node_config {
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring",
-    ]
+  remove_default_node_pool = true
+  initial_node_count       = 1
+
+  network    = google_compute_network.vpc.name
+  subnetwork = google_compute_subnetwork.subnet.name
+  </pre>
+</div>
 
     labels = {
       env = sensitive(var.project_id)
