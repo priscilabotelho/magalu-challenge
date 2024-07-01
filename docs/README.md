@@ -16,10 +16,10 @@ terraform {
   }
 }
 
-**required_providers:** Define os provedores necessários para o Terraform.
-**google:** Especifica que o provedor Google Cloud é necessário.
-**source:** Define a origem do provedor, que é "hashicorp/google".
-**version:** Define a versão específica do provedor a ser utilizada, neste caso, "5.35.0".
+- `required_providers:` Define os provedores necessários para o Terraform.
+- `google:` Especifica que o provedor Google Cloud é necessário.
+- `source:`Define a origem do provedor, que é "hashicorp/google".
+- `version:` Define a versão específica do provedor a ser utilizada, neste caso, "5.35.0".
 ---
 
 ### Cluster GKE (`arquivo gke.tf`)
@@ -36,16 +36,16 @@ resource "google_container_cluster" "magalu_cluster" {
 }
 
 ## Explicaçao do codigo acima:
-**name**: Define o nome do cluster GKE. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-gke.
-**location:** Especifica a região onde o cluster será provisionado, definida pela variável var.region.
-**remove_default_node_pool:** Define se o node pool padrão deve ser removido (nesse caso, sim).
-**initial_node_count:** Define o número inicial de nós no cluster, neste caso, 1.
-**network e subnetwork:** Especificam a rede e a sub-rede onde o cluster será criado
+- `name`: Define o nome do cluster GKE. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-gke.
+- `location:` Especifica a região onde o cluster será provisionado, definida pela variável var.region.
+- `remove_default_node_pool:`Define se o node pool padrão deve ser removido (nesse caso, sim).
+- `initial_node_count:` Define o número inicial de nós no cluster, neste caso, 1.
+- `network e subnetwork:` Especificam a rede e a sub-rede onde o cluster será criado
 ---
 
 ### Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
 
-resource "google_container_node_pool" "nodes_primarios" {
+  resource "google_container_node_pool" "nodes_primarios" {
   name       = "${google_container_cluster.magalu_cluster.name}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.magalu_cluster.name
@@ -73,19 +73,19 @@ resource "google_container_node_pool" "nodes_primarios" {
 
 ## Explicaçao do codigo acima:
 
-**name:** Define o nome do node pool gerenciado separadamente.
-**location:** Especifica a região onde o node pool será criado, igual à região do cluster.
-**cluster:** Especifica a qual cluster GKE este node pool pertence.
-**node_count:** Define o número de nós (máquinas virtuais) neste node pool.
+- `name:` Define o nome do node pool gerenciado separadamente.
+- `location:` Especifica a região onde o node pool será criado, igual à região do cluster.
+- `cluster:` Especifica a qual cluster GKE este node pool pertence.
+- `node_count:` Define o número de nós (máquinas virtuais) neste node pool.
 
 `Dentro de node_config, são configuradas as características dos nós do node pool:`
 
-**oauth_scopes:** Define as permissões OAuth que os nós terão para interagir com APIs do Google Cloud.
-**labels:** Atribui rótulos aos nós, como env.
-**machine_type:** Especifica o tipo de máquina virtual para os nós.
-**tags:** Atribui tags aos nós para identificação e controle de acesso.
-**metadata:** Configura metadados adicionais para os nós.
-**disk_size_gb:** Define o tamanho do disco em GB para cada nó no node pool.
+- `oauth_scopes:` Define as permissões OAuth que os nós terão para interagir com APIs do Google Cloud.
+- `labels:` Atribui rótulos aos nós, como env.
+- `machine_type:`Especifica o tipo de máquina virtual para os nós.
+- `tags:` Atribui tags aos nós para identificação e controle de acesso.
+- `metadata:` Configura metadados adicionais para os nós.
+- `disk_size_gb:` Define o tamanho do disco em GB para cada nó no node pool.
 ---
 
 ### VPC (`arquivo vpc.tf`)
@@ -97,20 +97,20 @@ resource "google_container_node_pool" "nodes_primarios" {
   region  = var.region
 }
 
-**project:** Define o ID do projeto Google Cloud, utilizando a variável var.project_id.
-**region:** Define a região onde os recursos serão criados, utilizando a variável var.region.
+- `project:` Define o ID do projeto Google Cloud, utilizando a variável var.project_id.
+- `region:` Define a região onde os recursos serão criados, utilizando a variável var.region.
 ---
 ### Rede VPC 
 
-**name:** Define o nome da rede VPC. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-vpc.
-**auto_create_subnetworks:** Define se as sub-redes devem ser criadas automaticamente. Neste caso, está definido como false, indicando que as sub-redes serão criadas manualmente.
+- `name:` Define o nome da rede VPC. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-vpc.
+- `auto_create_subnetworks:` Define se as sub-redes devem ser criadas automaticamente. Neste caso, está definido como false, indicando que as sub-redes serão criadas manualmente.
 ---
 ### Sub-rede 
 
-**name:** Define o nome da sub-rede. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-subnet.
-**region:** Especifica a região onde a sub-rede será criada, utilizando a variável var.region.
-**network:** Especifica a rede VPC à qual esta sub-rede pertence, utilizando o nome da rede VPC criada anteriormente.
-**ip_cidr_range:** Define o intervalo de endereços IP (CIDR) para a sub-rede, neste caso, 10.10.0.0/24.
+- `name:` Define o nome da sub-rede. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-subnet.
+- `region:` Especifica a região onde a sub-rede será criada, utilizando a variável var.region.
+- `network:` Especifica a rede VPC à qual esta sub-rede pertence, utilizando o nome da rede VPC criada anteriormente.
+- `ip_cidr_range:`Define o intervalo de endereços IP (CIDR) para a sub-rede, neste caso, 10.10.0.0/24.
 ---
 
 ### Outputs do Terraform (`arquivo outputs.tf`)
@@ -124,8 +124,8 @@ output "region" {
   description = "Região do GCloud"
 }
 
-**value:** Exibe o valor da variável var.region, que contém a região onde os recursos foram criados.
-**description:** Fornece uma descrição do output, neste caso, "Região do GCloud".
+- `value:` Exibe o valor da variável var.region, que contém a região onde os recursos foram criados.
+- `description:` Fornece uma descrição do output, neste caso, "Região do GCloud".
 ---
 
 #### ID do Projeto GCP
@@ -136,9 +136,9 @@ output "project_id" {
   sensitive   = true
 }
 
-**value:** Exibe o valor da variável var.project_id, que contém o ID do projeto Google Cloud.
-**description:** Fornece uma descrição do output, neste caso, "ID do projeto GCP".
-**sensitive:** Marca este output como sensível, escondendo seu valor em logs e saídas do Terraform
+- `value:` Exibe o valor da variável var.project_id, que contém o ID do projeto Google Cloud.
+- `description:` Fornece uma descrição do output, neste caso, "ID do projeto GCP".
+- `sensitive:` Marca este output como sensível, escondendo seu valor em logs e saídas do Terraform
 ---
 
 ### Nome do Cluster GKE
@@ -149,9 +149,9 @@ output "kubernetes_cluster_name" {
   sensitive   = true
 }
 
-**value:**  Exibe o nome do cluster GKE criado, acessando o recurso google_container_cluster.magalu_cluster.name.
-**description:**  Fornece uma descrição do output, neste caso, "Nome do cluster GKE".
-**sensitive:** Marca este output como sensível, escondendo seu valor em logs e saídas do Terraform.
+- `value:`  Exibe o nome do cluster GKE criado, acessando o recurso google_container_cluster.magalu_cluster.name.
+- `description:`  Fornece uma descrição do output, neste caso, "Nome do cluster GKE".
+- `sensitive:` Marca este output como sensível, escondendo seu valor em logs e saídas do Terraform.
 ---
 
 ### Host do Cluster GKE
@@ -162,9 +162,9 @@ output "kubernetes_cluster_host" {
   sensitive   = true
 }
 
-**value:** Exibe o endpoint (host) do cluster GKE criado, acessando o recurso google_container_cluster.magalu_cluster.endpoint.
-**description:** Fornece uma descrição do output, neste caso, "Host do cluster GKE".
-**sensitive:** Marca este output como sensível, escondendo seu valor em logs e saídas do Terraform.
+- `value:` Exibe o endpoint (host) do cluster GKE criado, acessando o recurso google_container_cluster.magalu_cluster.endpoint.
+- `description:` Fornece uma descrição do output, neste caso, "Host do cluster GKE".
+- `sensitive:` Marca este output como sensível, escondendo seu valor em logs e saídas do Terraform.
 
 ### Definição de Variáveis do Terraform
 
@@ -177,8 +177,8 @@ variable "gke_num_nodes" {
   description = "numero de nodes para o cluster"
 }
 
-**default:** Define o valor padrão como 1.
-**description:** Fornece uma descrição para a variável, neste caso, "número de nodes para o cluster".
+- `default:` Define o valor padrão como 1.
+- `description:` Fornece uma descrição para a variável, neste caso, "número de nodes para o cluster".
 
 ## Variável project_id
 
@@ -187,8 +187,8 @@ variable "project_id" {
   default = "magalu-challenge"
 }
 
-**default:** Define o valor padrão como "magalu-challenge".
-**description:** Fornece uma descrição para a variável, neste caso, "project id".
+- `default:` Define o valor padrão como "magalu-challenge".
+- `description:` Fornece uma descrição para a variável, neste caso, "project id".
 
 ## Variável region
 
@@ -197,8 +197,8 @@ variable "region" {
   default = "us-central1"
 }
 
-**default:** Define o valor padrão como "us-central1".
-**description:** Fornece uma descrição para a variável, neste caso, "region".
+- `default:` Define o valor padrão como "us-central1".
+- `description:` Fornece uma descrição para a variável, neste caso, "region".
 ---
 
 ## Em resumo...
