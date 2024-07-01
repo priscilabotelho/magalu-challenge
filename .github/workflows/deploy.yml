@@ -29,7 +29,9 @@ jobs:
         run: kubectl version --client
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+         cd terraform 
+         terraform init
 
       ##- name: Terraform Import Resources
         ##run: |
@@ -39,14 +41,20 @@ jobs:
         ##  terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
 
       - name: Terraform Validate
-        run: terraform validate
+        run: |
+         cd terraform 
+         terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: |
+         cd terraform 
+         terraform plan -out=tfplan
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve tfplan
+        run: |
+         cd terraform 
+         terraform apply -auto-approve tfplan
 
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials magalu-challenge-gke --region us-central1 --project magalu-challenge
