@@ -1,5 +1,5 @@
  
-## Esta documentação tem como objetivo explicar as funcionalidades e estrutura que foram criadas dentro do repositorio terraform-gke
+## Esta documentação tem como objetivo explicar as funcionalidades e estrutura que foram criadas dentro do repositorio magalu-challenge
 ---
 
 ## Estrutura de repositórios
