@@ -35,6 +35,7 @@ jobs:
 
       - name: Terraform Import Resources
         run: |
+         cd terraform-gke
          terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc
          terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
          terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
