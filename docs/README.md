@@ -81,8 +81,6 @@ resource "google_container_node_pool" "nodes_primarios" {
 </div>
 
 
-#### Explicaçao do codigo acima:
-
 - `name:` Define o nome do node pool gerenciado separadamente.
 - `location:` Especifica a região onde o node pool será criado, igual à região do cluster.
 - `cluster:` Especifica a qual cluster GKE este node pool pertence.
@@ -263,3 +261,50 @@ variable "region" {
 
 - `variables.tf`: São utilizadas para configurar o número de nós em um cluster GKE, o ID do projeto e a região no Google Cloud.
 
+---
+
+#### Aplicação Hello-World (`deployment.yaml`)
+
+<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px; overflow-x:auto;">
+  <pre>
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: hello-world
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+  </pre>
+</div>
+
+- `apiVersion:` Especifica a versão da API Kubernetes que o recurso utiliza.
+- `kind:` Define o tipo de recurso, neste caso, um Deployment.
+- `metadata:` Contém metadados do Deployment, como o nome.
+- `spec:` Especifica as características desejadas para o Deployment:
+- `replicas:` Indica que deve haver uma réplica do pod em execução.
+- `selector:` Define como os pods são selecionados para o Deployment, usando rótulos.
+- `matchLabels:` Especifica que os pods devem ter o rótulo app: hello-world.
+- `template:` Define o modelo de pod que será criado pelo Deployment:
+- `metadata:` Define os rótulos do pod.
+- `labels:` Define os rótulos do pod como app: hello-world.
+- `spec:` Especifica as configurações do pod:
+- `containers:` Define os containers no pod.
+- `name:` Nome do container.
+- `image:` Imagem Docker a ser usada (nginx neste caso).
+- `ports:` Define as portas expostas pelo container (containerPort: 80 para a porta 80).
+
+## Em resumo ..
+
+Este YAML define e especifica as características de um Deployment no Kubernetes, incluindo o número de réplicas desejadas, como os pods são selecionados, o modelo de pod a ser criado e suas configurações específicas, como nome do container, imagem Docker e portas expostas.
