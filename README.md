@@ -2,7 +2,7 @@
 
 Este arquivo tem como objetivo listar sobre a construção do desafio.
 
-![Logo](assets/Design sem nome.png)
+![Logo](assets/Design.png)
 
 ## Proposta Solicitada:
 
