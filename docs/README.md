@@ -50,7 +50,9 @@ resource "google_container_cluster" "magalu_cluster" {
 
 #### Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
 
-  resource "google_container_node_pool" "nodes_primarios" {
+<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
+  <pre>
+resource "google_container_node_pool" "nodes_primarios" {
   name       = "${google_container_cluster.magalu_cluster.name}-node-pool"
   location   = var.region
   cluster    = google_container_cluster.magalu_cluster.name
