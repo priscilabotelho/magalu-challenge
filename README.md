@@ -49,3 +49,5 @@ Este arquivo tem como objetivo listar sobre a construção do desafio.
 **Descrição**: Este é um arquivo de bloqueio do Terraform.
 
 **Conteúdo**: Contém as versões dos provedores que foram utilizados na última execução do `terraform init`. Isso garante que as mesmas versões sejam utilizadas em futuras execuções para manter a consistência.
+
+---
