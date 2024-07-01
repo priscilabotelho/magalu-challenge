@@ -51,3 +51,5 @@ Este arquivo tem como objetivo listar sobre a construção do desafio.
 **Conteúdo**: Contém as versões dos provedores que foram utilizados na última execução do `terraform init`. Isso garante que as mesmas versões sejam utilizadas em futuras execuções para manter a consistência.
 
 ---
+
+[Para mais detalhes consulte a documentação clicando aqui](docs/README.md)
