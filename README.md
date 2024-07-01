@@ -2,7 +2,7 @@
 
 Este arquivo tem como objetivo listar sobre a construção do desafio.
 
-![Logo](https://www.canva.com/design/DAGJtnInQic/JTgxCD97Y9DyAmVbqBwjWQ/edit?ui=eyJEIjp7IkoiOnsiQiI6eyJBPyI6IkIifX19LCJBIjp7IkEiOiJkb3dubG9hZF9wbmciLCJGIjp0cnVlfSwiRyI6eyJEIjp7IkQiOnsiQT8iOiJBIiwiQSI6IkIifX19fQ)
+![Logo](assets/Design sem nome.png)
 
 ## Proposta Solicitada:
 
