@@ -38,8 +38,7 @@
 
 ## Provedor Google (`arquivo main.tf`)
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 terraform {
   required_providers {
     google = {
@@ -48,8 +47,7 @@ terraform {
     }
   }
 }
-  </pre>
-</div>
+```
 
 
 - `required_providers:` Define os provedores necessários para o Terraform.
