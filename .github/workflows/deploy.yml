@@ -30,32 +30,48 @@ jobs:
 
       - name: Terraform Init
         run: |
-         cd terraform-gke
-         terraform init
+          cd terraform-gke
+          terraform init
 
-      - name: Terraform Import Resources
+      - name: Check and Import Resources
         run: |
-         cd terraform-gke
-         terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc
-         terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
-         terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
-         terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
+          cd terraform-gke
+          
+          # Check and import VPC
+          if gcloud compute networks describe magalu-challenge-vpc --project=magalu-challenge; then
+            terraform import google_compute_network.vpc projects/magalu-challenge/global/networks/magalu-challenge-vpc
+          fi
+
+          # Check and import Subnet
+          if gcloud compute networks subnets describe magalu-challenge-subnet --region=us-central1 --project=magalu-challenge; then
+            terraform import google_compute_subnetwork.subnet projects/magalu-challenge/regions/us-central1/subnetworks/magalu-challenge-subnet
+          fi
+
+          # Check and import GKE Cluster
+          if gcloud container clusters describe magalu-challenge-gke --region=us-central1 --project=magalu-challenge; then
+            terraform import google_container_cluster.magalu_cluster projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke
+          fi
+
+          # Check and import GKE Node Pool
+          if gcloud container node-pools describe magalu-challenge-gke-node-pool --cluster=magalu-challenge-gke --region=us-central1 --project=magalu-challenge; then
+            terraform import google_container_node_pool.nodes_primarios projects/magalu-challenge/locations/us-central1/clusters/magalu-challenge-gke/nodePools/magalu-challenge-gke-node-pool
+          fi
 
       - name: Terraform Validate
         run: |
-         cd terraform-gke 
-         terraform validate
+          cd terraform-gke
+          terraform validate
 
       - name: Terraform Plan
         run: |
-         cd terraform-gke 
-         terraform plan -out=tfplan
+          cd terraform-gke
+          terraform plan -out=tfplan
 
       - name: Terraform Apply
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-         cd terraform-gke 
-         terraform apply -auto-approve tfplan
+          cd terraform-gke
+          terraform apply -auto-approve tfplan
 
       - name: Get GKE credentials
         run: gcloud container clusters get-credentials magalu-challenge-gke --region us-central1 --project magalu-challenge
@@ -63,3 +79,14 @@ jobs:
       - name: Deploy Hello World
         if: success()
         run: kubectl apply -f app/deployment.yaml
+
+      - name: Install Helm
+        run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+      - name: Add Helm repository
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+
+      - name: Install Prometheus
+        run: helm install prometheus prometheus-community/kube-prometheus-stack
