@@ -80,3 +80,7 @@ jobs:
         if: success()
         run: kubectl apply -f app/deployment.yaml
 
+      - name: Deploy Grafana
+        if: success()
+        run: kubectl apply -f app/grafana-deployment.yaml  
+
