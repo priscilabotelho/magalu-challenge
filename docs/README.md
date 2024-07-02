@@ -49,7 +49,6 @@ terraform {
 }
 ```
 
-
 - `required_providers:` Define os provedores necessários para o Terraform.
 - `google:` Especifica que o provedor Google Cloud é necessário.
 - `source:`Define a origem do provedor, que é "hashicorp/google".
@@ -58,8 +57,7 @@ terraform {
 
 ## Cluster GKE (`arquivo gke.tf`)
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 resource "google_container_cluster" "magalu_cluster" {
   name     = sensitive("${var.project_id}-gke")
   location = var.region
@@ -69,8 +67,7 @@ resource "google_container_cluster" "magalu_cluster" {
 
   network    = google_compute_network.vpc.name
   subnetwork = google_compute_subnetwork.subnet.name
-  </pre>
-</div>
+```
 
 - `name`: Define o nome do cluster GKE. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-gke.
 - `location:` Especifica a região onde o cluster será provisionado, definida pela variável var.region.
@@ -81,8 +78,7 @@ resource "google_container_cluster" "magalu_cluster" {
 
 ## Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 resource "google_container_node_pool" "nodes_primarios" {
   name       = "${google_container_cluster.magalu_cluster.name}-node-pool"
   location   = var.region
@@ -94,11 +90,9 @@ resource "google_container_node_pool" "nodes_primarios" {
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
     ]
-
     labels = {
       env = sensitive(var.project_id)
     }
-
     machine_type = "e2-micro"
     tags         = ["gke-node", sensitive("${var.project_id}-gke")]
     metadata = {
@@ -108,9 +102,7 @@ resource "google_container_node_pool" "nodes_primarios" {
     disk_size_gb = 30  
   }
 }
-  </pre>
-</div>
-
+```
 
 - `name:` Define o nome do node pool gerenciado separadamente.
 - `location:` Especifica a região onde o node pool será criado, igual à região do cluster.
@@ -131,15 +123,12 @@ resource "google_container_node_pool" "nodes_primarios" {
 
 #### Provedor Google
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 provider "google" {
   project = var.project_id
   region  = var.region
 }
-  </pre>
-</div>
-
+```
 
 - `project:` Define o ID do projeto Google Cloud, utilizando a variável var.project_id.
 - `region:` Define a região onde os recursos serão criados, utilizando a variável var.region.
@@ -163,15 +152,12 @@ Este código define outputs para serem exibidos ao final da execução do Terraf
 
 #### Região do GCloud
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 output "region" {
   value       = var.region
   description = "Região do GCloud"
 }
-  </pre>
-</div>
-
+```
 
 - `value:` Exibe o valor da variável var.region, que contém a região onde os recursos foram criados.
 - `description:` Fornece uma descrição do output, neste caso, "Região do GCloud".
@@ -179,16 +165,13 @@ output "region" {
 
 #### ID do Projeto GCP
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 output "project_id" {
   value       = var.project_id
   description = "ID do projeto GCP"
   sensitive   = true
 }
-  </pre>
-</div>
-
+```
 
 - `value:` Exibe o valor da variável var.project_id, que contém o ID do projeto Google Cloud.
 - `description:` Fornece uma descrição do output, neste caso, "ID do projeto GCP".
@@ -197,16 +180,13 @@ output "project_id" {
 
 #### Nome do Cluster GKE
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 output "kubernetes_cluster_name" {
   value       = google_container_cluster.magalu_cluster.name
   description = "Nome do cluster GKE"
   sensitive   = true
 }
-  </pre>
-</div>
-
+```
 
 - `value:`  Exibe o nome do cluster GKE criado, acessando o recurso google_container_cluster.magalu_cluster.name.
 - `description:`  Fornece uma descrição do output, neste caso, "Nome do cluster GKE".
@@ -215,16 +195,13 @@ output "kubernetes_cluster_name" {
 
 #### Host do Cluster GKE
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 output "kubernetes_cluster_host" {
   value       = google_container_cluster.magalu_cluster.endpoint
   description = "Host do cluster GKE"
   sensitive   = true
 }
-  </pre>
-</div>
-
+```
 
 - `value:` Exibe o endpoint (host) do cluster GKE criado, acessando o recurso google_container_cluster.magalu_cluster.endpoint.
 - `description:` Fornece uma descrição do output, neste caso, "Host do cluster GKE".
@@ -236,45 +213,36 @@ Este código define três variáveis para uso em configurações do Terraform.
 
 ## Variáveis (`variables.tf`)
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 variable "gke_num_nodes" {
   default     = 1
   description = "numero de nodes para o cluster"
 }
-  </pre>
-</div>
-
+```
 
 - `default:` Define o valor padrão como 1.
 - `description:` Fornece uma descrição para a variável, neste caso, "número de nodes para o cluster".
 
 #### Variável project_id
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 variable "project_id" {
   description = "project id"
   default = "magalu-challenge"
 }
-  </pre>
-</div>
-
+```
 
 - `default:` Define o valor padrão como "magalu-challenge".
 - `description:` Fornece uma descrição para a variável, neste caso, "project id".
 
 #### Variável region
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
-  <pre>
+```yaml
 variable "region" {
   description = "region"
   default = "us-central1"
 }
-  </pre>
-</div>
-
+```
 
 - `default:` Define o valor padrão como "us-central1".
 - `description:` Fornece uma descrição para a variável, neste caso, "region".
@@ -296,8 +264,7 @@ variable "region" {
 
 ## Aplicação Hello-World (`deployment.yaml`)
 
-<div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px; overflow-x:auto;">
-  <pre>
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -317,8 +284,7 @@ spec:
           image: nginx:latest
           ports:
             - containerPort: 80
-  </pre>
-</div>
+```
 
 - `apiVersion:` Especifica a versão da API Kubernetes que o recurso utiliza.
 - `kind:` Define o tipo de recurso, neste caso, um Deployment.
