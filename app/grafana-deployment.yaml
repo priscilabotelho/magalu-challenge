@@ -19,18 +19,17 @@ spec:
             - containerPort: 3000
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
-              value: "123456" # Altere para uma senha segura
+              value: 123456" # Altere para uma senha segura
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: grafana-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: grafana
   ports:
     - protocol: TCP
-      port: 90
+      port: 80
       targetPort: 3000
-      nodePort: 32000
