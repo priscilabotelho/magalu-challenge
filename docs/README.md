@@ -36,7 +36,7 @@
 
 ---
 
-#### Provedor Google
+## Provedor Google (`arquivo main.tf`)
 
 <div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
   <pre>
@@ -58,7 +58,7 @@ terraform {
 - `version:` Define a versão específica do provedor a ser utilizada, neste caso, "5.35.0".
 ---
 
-#### Cluster GKE (`arquivo gke.tf`)
+## Cluster GKE (`arquivo gke.tf`)
 
 <div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
   <pre>
@@ -74,7 +74,6 @@ resource "google_container_cluster" "magalu_cluster" {
   </pre>
 </div>
 
-#### Explicaçao do codigo acima:
 - `name`: Define o nome do cluster GKE. Aqui, sensitive() é usado para proteger o valor de ${var.project_id}-gke.
 - `location:` Especifica a região onde o cluster será provisionado, definida pela variável var.region.
 - `remove_default_node_pool:`Define se o node pool padrão deve ser removido (nesse caso, sim).
@@ -82,7 +81,7 @@ resource "google_container_cluster" "magalu_cluster" {
 - `network e subnetwork:` Especificam a rede e a sub-rede onde o cluster será criado
 ---
 
-#### Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
+## Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
 
 <div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
   <pre>
@@ -130,7 +129,7 @@ resource "google_container_node_pool" "nodes_primarios" {
 - `disk_size_gb:` Define o tamanho do disco em GB para cada nó no node pool.
 ---
 
-#### VPC (`arquivo vpc.tf`)
+## VPC (`arquivo vpc.tf`)
 
 #### Provedor Google
 
@@ -160,7 +159,7 @@ provider "google" {
 - `ip_cidr_range:`Define o intervalo de endereços IP (CIDR) para a sub-rede, neste caso, 10.10.0.0/24.
 ---
 
-#### Outputs do Terraform (`arquivo outputs.tf`)
+## Outputs do Terraform (`arquivo outputs.tf`)
 
 Este código define outputs para serem exibidos ao final da execução do Terraform, fornecendo informações úteis sobre a infraestrutura provisionada. 
 
@@ -237,7 +236,7 @@ output "kubernetes_cluster_host" {
 
 Este código define três variáveis para uso em configurações do Terraform.
 
-#### Variável (`variables.tf`)
+## Variáveis (`variables.tf`)
 
 <div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px;">
   <pre>
@@ -297,7 +296,7 @@ variable "region" {
 
 ---
 
-#### Aplicação Hello-World (`deployment.yaml`)
+## Aplicação Hello-World (`deployment.yaml`)
 
 <div style="background-color:#f0f0f0; padding:10px; border:1px solid #ccc; border-radius:5px; overflow-x:auto;">
   <pre>
@@ -341,4 +340,4 @@ spec:
 
 ## Em resumo ..
 
-Este YAML define e especifica as características de um Deployment no Kubernetes, incluindo o número de réplicas desejadas, como os pods são selecionados, o modelo de pod a ser criado e suas configurações específicas, como nome do container, imagem Docker e portas expostas.
+O arquivo YAML acima define e especifica as características de um Deployment no Kubernetes, incluindo o número de réplicas desejadas, como os pods são selecionados, o modelo de pod a ser criado e suas configurações específicas, como nome do container, imagem Docker e portas expostas.
