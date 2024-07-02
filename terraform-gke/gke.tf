@@ -34,6 +34,6 @@ resource "google_container_node_pool" "nodes_primarios" {
     }
 
     # Definindo o tamanho do disco SSD em GB
-    disk_size_gb = 30  
+    disk_size_gb = 40  
   }
 }
