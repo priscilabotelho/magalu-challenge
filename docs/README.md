@@ -76,7 +76,7 @@ resource "google_container_cluster" "magalu_cluster" {
 - `network e subnetwork:` Especificam a rede e a sub-rede onde o cluster será criado
 ---
 
-## Node Pool Gerenciado Separadamente (`arquivo gke.tf`)
+## Node Pool (`arquivo gke.tf`)
 
 ```yaml
 resource "google_container_node_pool" "nodes_primarios" {

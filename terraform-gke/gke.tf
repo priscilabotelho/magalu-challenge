@@ -10,7 +10,7 @@ resource "google_container_cluster" "magalu_cluster" {
   subnetwork = google_compute_subnetwork.subnet.name
 }
 
-# Node Pool Gerenciado Separadamente
+# Node Pool
 resource "google_container_node_pool" "nodes_primarios" {
   name       = "${google_container_cluster.magalu_cluster.name}-node-pool"
   location   = var.region
